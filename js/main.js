@@ -32,7 +32,7 @@ function getRandomCoordinate(firstNumber, secondNumber, quantity){
 
 }
 
-
+// Примеры и методы взяты с ссайта developer.mozilla.org
 getRandomCoordinate(110, 100.3, 3);
 
 getRandomNumber(100,100);

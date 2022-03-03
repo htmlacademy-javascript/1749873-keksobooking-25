@@ -76,4 +76,4 @@ const createAds = ()=>(
 
 const getArrayAds = Array.from({length: 10}, createAds);
 
-console.log(getArrayAds);
+

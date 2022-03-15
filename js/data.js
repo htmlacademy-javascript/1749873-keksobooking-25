@@ -63,7 +63,7 @@ function createAds() {
       offer: createOffer(),
       location: createLocation(),
     });
-};
+}
 
 const getArrayAds = (count)=>Array.from({length: count}, createAds);
 export{getArrayAds};

@@ -65,5 +65,5 @@ function createAds() {
     });
 }
 
-const getArrayAds = (count)=>Array.from({length: count}, createAds);
-export{getArrayAds};
+const getUserAds = (count)=>Array.from({length: count}, createAds);
+export{getUserAds};

@@ -9,7 +9,7 @@ const adFormRoomNumberOption = {
   '3': ['1','2','3'],
   '100':['0'],
 };
-
+const mapFilters = document.querySelector('.map__filters');
 const pristine =  new Pristine(adForm,{
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
@@ -45,4 +45,3 @@ adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
-

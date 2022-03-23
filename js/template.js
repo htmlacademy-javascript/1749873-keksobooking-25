@@ -34,3 +34,4 @@ userAds.forEach(({author, offer})=>{
   mapCanvasAd.append(popupAdsElement);
 });
 
+

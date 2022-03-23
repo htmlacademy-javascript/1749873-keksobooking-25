@@ -35,9 +35,10 @@ function createUserAd({author, offer}){
   mapCanvasAd.append(popupAdElement);
 
 }
-const buildUserAd = userAds.forEach(createUserAd);
+const buildUserAd = ()=>userAds.forEach(createUserAd);
 const deleteUserAd = ()=>{
   mapCanvasAd.innerHTML='';
 };
 buildUserAd();
 deleteUserAd();
+

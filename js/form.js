@@ -9,15 +9,18 @@ const adFormRoomNumberOption = {
   '3': ['1','2','3'],
   '100':['0'],
 };
+
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
 const MAX_PRICE = 100000;
 const MIN_PRICE = 0;
 const mapFilters = document.querySelector('.map__filters');
+
 const pristine =  new Pristine(adForm,{
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
   errorTextClass: 'ad-form__element__error-text',
+
 });
 
 function validateTitle(value){
@@ -25,12 +28,15 @@ function validateTitle(value){
 }
 function validatePrice(value){
   return  value >MIN_PRICE && value <= MAX_PRICE;
+
 }
 function getPriceErrorText(){
   if( adFormPrice.value===''){
     return 'Обязательное поле!';
   }
+
   return `Максимальная цена — ${MAX_PRICE}`;
+
 }
 
 function validateRoomNumber () {
@@ -42,6 +48,7 @@ function getRoomNumberErrorText(){
 }
 
 pristine.addValidator(adFormTitle, validateTitle, `Обязательное поле! Длина от ${MIN_LENGTH_TITLE} до ${MAX_LENGTH_TITLE} символов` );
+
 pristine.addValidator(adFormPrice, validatePrice, getPriceErrorText );
 pristine.addValidator(adFormCapacity, validateRoomNumber);
 pristine.addValidator(adFormRoomNumber, validateRoomNumber, getRoomNumberErrorText);
@@ -49,6 +56,7 @@ adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
+
 // //////////////////////////включение и отключение форм////////////////////////
 
 const adFormElements = adForm.querySelectorAll('.ad-form__element');
@@ -82,3 +90,4 @@ function adFormMapFiltersActive (){
 
 adFormMapFiltersDisabled();
 adFormMapFiltersActive();
+

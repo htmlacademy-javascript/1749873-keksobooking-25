@@ -6,7 +6,7 @@ const mapCanvasAd = document.querySelector('#map-canvas');
 
 const userAds = getUserAds(1);
 
-function createUserAd({author, offer}){
+function createAd({author, offer}){
   const popupAdElement = popupAdTemplate.cloneNode(true);
   popupAdElement.querySelector('.popup__title').textContent = offer.title;
   popupAdElement.querySelector('.popup__text--address').textContent = offer.address;
@@ -35,7 +35,7 @@ function createUserAd({author, offer}){
   mapCanvasAd.append(popupAdElement);
 
 }
-const buildUserAd = ()=>userAds.forEach(createUserAd);
+const buildUserAd = ()=>userAds.forEach(createAd);
 const deleteUserAd = ()=>{
   mapCanvasAd.innerHTML='';
 };

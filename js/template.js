@@ -1,12 +1,7 @@
-import {getUserAds} from './data.js';
-
-const popupAdTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvasAd = document.querySelector('#map-canvas');
-
-
-const userAds = getUserAds(1);
 
 function createAd({author, offer}){
+  const popupAdTemplate = document.querySelector('#card').content.querySelector('.popup');
+
   const popupAdElement = popupAdTemplate.cloneNode(true);
   popupAdElement.querySelector('.popup__title').textContent = offer.title;
   popupAdElement.querySelector('.popup__text--address').textContent = offer.address;
@@ -32,14 +27,8 @@ function createAd({author, offer}){
     userAdImageElement.src = userPhoto;
     userAdImageContainer.append(userAdImageElement);
   });
-  mapCanvasAd.append(popupAdElement);
 
+  return popupAdElement;
 }
-const buildUserAd = ()=>userAds.forEach(createAd);
-const deleteUserAd = ()=>{
-  mapCanvasAd.innerHTML='';
-};
-buildUserAd();
-deleteUserAd();
 
-
+export {createAd};

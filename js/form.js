@@ -44,6 +44,9 @@ function validateRoomNumber () {
   return adFormRoomNumberOption[adFormRoomNumber.value].includes(adFormCapacity.value);
 }
 function getRoomNumberErrorText(){
+  if(adFormRoomNumber.value==='100'){
+    return `${adFormRoomNumber.value} комнат не для гостей`;
+  }
   return `${adFormRoomNumber.value} ${adFormRoomNumber.value==='1' ? 'комната' : 'комнаты'} только для ${adFormRoomNumber.value} ${adFormRoomNumber.value==='1' ? 'гостя' : 'гостей и менее!'} `;
 }
 
@@ -66,12 +69,12 @@ function adFormMapFiltersDisabled (){
   adForm.classList.add('ad-form--disabled');
 
   adFormElements.forEach((element) => {
-    element.setAttribute('disabled', 'disabled');
+    element.setAttribute('disabled', true);
   });
 
-  mapFiltersFeatures.setAttribute('disabled', 'disabled');
+  mapFiltersFeatures.setAttribute('disabled', true);
   mapFiltersElements.forEach((element) => {
-    element.setAttribute('disabled', 'disabled');
+    element.setAttribute('disabled', true);
   });
   mapFilters.classList.add('map__filters--disabled');
 }
@@ -79,15 +82,15 @@ function adFormMapFiltersDisabled (){
 function adFormMapFiltersActive (){
   adForm.classList.remove('ad-form--disabled');
   adFormElements.forEach((element) => {
-    element.removeAttribute('disabled', 'disabled');
+    element.removeAttribute('disabled');
   });
-  mapFiltersFeatures.removeAttribute('disabled', 'disabled');
+  mapFiltersFeatures.removeAttribute('disabled');
   mapFiltersElements.forEach((element) => {
-    element.removeAttribute('disabled', 'disabled');
+    element.removeAttribute('disabled');
   });
   mapFilters.classList.remove('map__filters--disabled');
 }
 
-adFormMapFiltersDisabled();
-adFormMapFiltersActive();
+
+export {adFormMapFiltersActive ,adFormMapFiltersDisabled};
 

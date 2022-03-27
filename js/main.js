@@ -1,2 +1,3 @@
-import './template.js';
+
 import './form.js';
+import './inc-leaflet.js';

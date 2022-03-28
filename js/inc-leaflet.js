@@ -28,13 +28,13 @@ L.tileLayer(
 
 const mainMapIcon = L.icon({
   iconUrl: './img/main-pin.svg',
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
 });
 const otherMapIcon = L.icon({
   iconUrl: './img/pin.svg',
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 });
 const mainMapMarker = L.marker(
   {
@@ -66,7 +66,7 @@ resetButton.addEventListener('click', ()=>{
     lat: mapLat,
     lng: mapLng,
   }, 13);
-
+  adressAdForm.placeholder =  `широта - ${mapLat},  долгота - ${mapLng}` ;
 });
 
 userAdsForMap.forEach(({author, offer, location}) => {

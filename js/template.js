@@ -1,7 +1,6 @@
 
 function createAd({author, offer}){
   const popupAdTemplate = document.querySelector('#card').content.querySelector('.popup');
-
   const popupAdElement = popupAdTemplate.cloneNode(true);
   popupAdElement.querySelector('.popup__title').textContent = offer.title;
   popupAdElement.querySelector('.popup__text--address').textContent = offer.address;
@@ -27,7 +26,6 @@ function createAd({author, offer}){
     userAdImageElement.src = userPhoto;
     userAdImageContainer.append(userAdImageElement);
   });
-
   return popupAdElement;
 }
 

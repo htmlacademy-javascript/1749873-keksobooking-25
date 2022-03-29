@@ -2,6 +2,7 @@ const priceSlider = document.querySelector('.ad-form__slider');
 const adFormPrice = document.querySelector('#price');
 
 adFormPrice.value = 5000;
+
 noUiSlider.create(priceSlider, {
   range: {
     min: 0,
@@ -18,10 +19,9 @@ noUiSlider.create(priceSlider, {
       return parseFloat(value);
     },},
 });
+
 priceSlider.noUiSlider.on('update', () => {
   adFormPrice.value = priceSlider.noUiSlider.get();
 });
-export {priceSlider};
-/*
 
-adFormType.addEventListener('change',(evt)=>setMinMaxPrice(evt.target.placeholder));*/
+export {priceSlider};

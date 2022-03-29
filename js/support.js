@@ -8,8 +8,10 @@ function getRandomInt(from, to, quantity = 0){
 function getRandomElement(elements) {
   return elements[getRandomInt(0, elements.length - 1)];
 }
+
 function getRandomValue(values) {
   const newValues = values.sort(() => Math.random() - 0.5);
   return newValues.slice(0, getRandomInt(1, values.length + 1));
 }
+
 export{getRandomInt, getRandomElement, getRandomValue};

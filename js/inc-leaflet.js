@@ -6,8 +6,8 @@ const resetButton = document.querySelector('.ad-form__reset');
 const adressAdForm = document.querySelector('#address');
 const mapLat = 35.68172;
 const mapLng = 139.75392;
-
 const userAdsForMap = getUserAds(10);
+
 adFormMapFiltersDisabled();
 
 const map = L.map('map-canvas')
@@ -48,7 +48,9 @@ const mainMapMarker = L.marker(
 );
 
 adressAdForm.value = `широта - ${mainMapMarker.getLatLng().lat},  долгота - ${mainMapMarker.getLatLng().lng}`;
+
 mainMapMarker.addTo(map);
+
 function getAdressString(marker){
   const adress = marker.getLatLng();
   return `широта - ${adress.lat.toFixed(5)},  долгота - ${adress.lng.toFixed(5)}`;
@@ -57,6 +59,7 @@ function getAdressString(marker){
 mainMapMarker.on('moveend', (evt) => {
   adressAdForm.value = getAdressString(evt.target);
 });
+
 resetButton.addEventListener('click', ()=>{
   mainMapMarker.setLatLng({
     lat: mapLat,
@@ -77,8 +80,5 @@ userAdsForMap.forEach(({author, offer, location}) => {
   {
     icon: otherMapIcon,
   });
-
   marker.addTo(map).bindPopup(createAd({author, offer}));
 });
-
-

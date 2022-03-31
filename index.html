@@ -5,7 +5,12 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/inc-style.css">
+  <link rel="stylesheet" href="leaflet/leaflet.css">
+  <link rel="stylesheet" href="nouislider/nouislider.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  
   <title>Кексобукинг</title>
 </head>
 
@@ -21,7 +26,9 @@
     <section class="map">
 
       <!-- Блок для вставки карты -->
-      <div class="map__canvas" id="map-canvas"></div>
+      <div class="map__canvas" id="map-canvas">
+
+      </div>
 
       <!-- Фильтрация объявлений -->
       <div class="map__filters-container">
@@ -80,8 +87,6 @@
       <h2 class="notice__title">Ваше объявление</h2>
 
       <form class="ad-form" method="post" enctype="multipart/form-data" autocomplete="off" action="https://25.javascript.pages.academy/keksobooking ">
-
->>>>>>> master
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
           <div class="ad-form-header__upload">
@@ -103,7 +108,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text">
+          <input id="address" name="address" type="text" readonly>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -257,6 +262,8 @@
   <!-- блок JS -->
   <script src="pristine/pristine.min.js"></script>
   <script src="js/main.js" type="module"></script>
+  <script src="leaflet/leaflet.js"></script>
+  <script src="nouislider/nouislider.js"></script>
 </body>
 
 </html>

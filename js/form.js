@@ -28,7 +28,7 @@ function adFormMapFiltersActive (){
   });
   priceSlider.removeAttribute('disabled');
 }
-///синхронизация времени выезда и заезда
+///синхронизация времени выезда и заезда////
 const adFormtimein = adForm.querySelector('#timein');
 const adFormtimeout = adForm.querySelector('#timeout');
 

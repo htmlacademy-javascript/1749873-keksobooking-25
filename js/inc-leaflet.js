@@ -1,12 +1,12 @@
 import {adFormMapFiltersActive, adFormMapFiltersDisabled} from './form.js';
-import {getUserAds} from './data.js';
-import {createAd} from './template.js';
 
+import {createAd} from './template.js';
+import {createLoader} from './load.js';
 const resetButton = document.querySelector('.ad-form__reset');
 const adressAdForm = document.querySelector('#address');
 const mapLat = 35.68172;
 const mapLng = 139.75392;
-const userAdsForMap = getUserAds(10);
+
 
 adFormMapFiltersDisabled();
 
@@ -71,14 +71,18 @@ resetButton.addEventListener('click', ()=>{
   }, 13);
   adressAdForm.placeholder =  `широта - ${mapLat},  долгота - ${mapLng}` ;
 });
+function createAdMap(ads){
 
-userAdsForMap.forEach(({author, offer, location}) => {
-  const marker = L.marker({
-    lat:location.lat,
-    lng:location.lng,
-  },
-  {
-    icon: otherMapIcon,
+  ads.forEach((ad) => {
+    const marker = L.marker({
+      lat:ad.location.lat,
+      lng:ad.location.lng,
+    },
+    {
+      icon: otherMapIcon,
+    });
+    marker.addTo(map).bindPopup(createAd(ad));
   });
-  marker.addTo(map).bindPopup(createAd({author, offer}));
-});
+}
+const loaderMap = createLoader(createAdMap);
+loaderMap();

@@ -1,19 +1,14 @@
-import {adFormMapFiltersActive, adFormMapFiltersDisabled} from './form.js';
-
+import { adFormMapFiltersActive} from './form.js';
+// import {adErrorMessage} from './template.js';
 import {createAd} from './template.js';
-import {createLoader} from './load.js';
+import {getAds} from './load.js';
 const resetButton = document.querySelector('.ad-form__reset');
 const adressAdForm = document.querySelector('#address');
 const mapLat = 35.68172;
 const mapLng = 139.75392;
-
-
-adFormMapFiltersDisabled();
+// adFormMapFiltersDisabled();
 
 const map = L.map('map-canvas')
-  .on('load', () => {
-    adFormMapFiltersActive();
-  })
   .setView({
     lat: mapLat,
     lng: mapLng,
@@ -83,6 +78,7 @@ function createAdMap(ads){
     });
     marker.addTo(map).bindPopup(createAd(ad));
   });
+  adFormMapFiltersActive();
 }
-const loaderMap = createLoader(createAdMap);
+const loaderMap = getAds(createAdMap);
 loaderMap();

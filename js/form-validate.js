@@ -1,3 +1,5 @@
+import {sendAds} from './load.js';
+
 const adForm = document.querySelector('.ad-form');
 const adFormTitle = adForm.querySelector('#title');
 const adFormPrice = adForm.querySelector('#price');
@@ -65,8 +67,15 @@ pristine.addValidator(adFormTitle, validateTitle, `Обязательное по
 pristine.addValidator(adFormPrice, validatePrice, getPriceErrorText );
 pristine.addValidator(adFormCapacity, validateRoomNumber);
 pristine.addValidator(adFormRoomNumber, validateRoomNumber, getRoomNumberErrorText);
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
-export {adForm};
+
+function setFormSubmit(onSuccess, onFail){
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if(pristine.validate()){
+      const formData = new FormData(evt.target);
+      const send=sendAds(onSuccess, onFail, formData);
+      send();
+    }
+  });
+}
+export {setFormSubmit};

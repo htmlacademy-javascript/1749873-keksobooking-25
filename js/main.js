@@ -1,5 +1,6 @@
-import './form-validate.js';
+import {setFormSubmit} from'./form-validate.js';
+import {adErrorMessage, adSuccesMessage} from './template.js';
 import './form.js';
 import './inc-leaflet.js';
 import './inc-nouislider.js';
-import './load.js';
+setFormSubmit(adSuccesMessage, adErrorMessage);

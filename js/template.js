@@ -7,6 +7,9 @@ const housingTypes = {
   'palace':'Дворец'
 };
 const popupAdTemplate = document.querySelector('#card').content.querySelector('.popup');
+const successMessageTemplate=document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate=document.querySelector('#error').content.querySelector('.error');
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 function createAd({offer, author}){
   const popupAdElement = popupAdTemplate.cloneNode(true);
@@ -46,7 +49,38 @@ function createAd({offer, author}){
   }else{
     userAdImageContainer.classList.add('hidden');
   }
+
   return popupAdElement;
 }
 
-export {createAd};
+function adSuccesMessage(){
+  const succesMessage = successMessageTemplate.cloneNode(true);
+  document.body.append(succesMessage);
+  deleteMessage('.success');
+}
+function adErrorMessage(){
+  const errorMessage = errorMessageTemplate.cloneNode(true);
+  document.body.append(errorMessage);
+  deleteMessage('.error');
+}
+
+function deleteMessage(selector){
+  const message = document.querySelector(selector);
+  document.addEventListener('click', ()=>{
+    message.remove();
+  });
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      message.remove();
+    }
+  });
+  if(selector==='.error'){
+    const errorButton = document.querySelector('button[type=button]');
+    errorButton.addEventListener('click', ()=>{
+      message.remove();
+    });
+  }
+}
+// adErrorMessage();
+
+export {createAd, adErrorMessage, adSuccesMessage};

@@ -1,5 +1,6 @@
 import {priceSlider} from './inc-nouislider.js';
-import {adForm} from './form-validate.js';
+// import {adForm} from './form-validate.js';
+const adForm = document.querySelector('.ad-form');
 // //////////////////////////включение и отключение форм////////////////////////
 const adFormElements = adForm.querySelectorAll('.ad-form__element');
 const mapFiltersElements = document.querySelectorAll('.map__filter');
@@ -40,4 +41,9 @@ adFormtimeout.addEventListener('change', ()=>{
   adFormtimein.value=adFormtimeout.value;
 });
 
-export {adFormMapFiltersActive ,adFormMapFiltersDisabled};
+adFormMapFiltersDisabled();
+function resetForm(){
+  adForm.reset();
+}
+
+export {adFormMapFiltersActive, adFormMapFiltersDisabled, resetForm};

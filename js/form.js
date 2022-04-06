@@ -1,10 +1,12 @@
-import {priceSlider} from './inc-nouislider.js';
-// import {adForm} from './form-validate.js';
+import {priceSlider, resetSlider} from './inc-nouislider.js';
+import {resetMap} from './inc-leaflet.js';
+
 const adForm = document.querySelector('.ad-form');
-// //////////////////////////включение и отключение форм////////////////////////
+const resetButton = document.querySelector('.ad-form__reset');
 const adFormElements = adForm.querySelectorAll('.ad-form__element');
 const mapFiltersElements = document.querySelectorAll('.map__filter');
 const mapFiltersFeatures=  document.querySelector('.map__features');
+const mapFilters = document.querySelector('.map__filters');
 
 function adFormMapFiltersDisabled (){
   adForm.classList.add('ad-form--disabled');
@@ -41,9 +43,14 @@ adFormtimeout.addEventListener('change', ()=>{
   adFormtimein.value=adFormtimeout.value;
 });
 
-adFormMapFiltersDisabled();
-function resetForm(){
+// adFormMapFiltersDisabled();
+function resetFormMap(){
   adForm.reset();
+  mapFilters.reset();
+  resetMap();
+  resetSlider();
 }
-
-export {adFormMapFiltersActive, adFormMapFiltersDisabled, resetForm};
+resetButton.addEventListener('click', ()=>{
+  resetFormMap();
+});
+export {adFormMapFiltersActive, adFormMapFiltersDisabled, resetFormMap};

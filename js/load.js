@@ -1,4 +1,4 @@
-const getAds = (onSuccess, onFail) =>()=>{
+const getAds = (onSuccess, onFail) =>{
   fetch(
     'https://25.javascript.pages.academy/keksobooking/data'
   )
@@ -10,13 +10,13 @@ const getAds = (onSuccess, onFail) =>()=>{
       }
     })
     .then((data) => {
-      onSuccess(data.slice(0,15));
+      onSuccess(data.slice(0,20));
     }).catch(() => {
       onFail();
     });
 };
 
-const sendAds = (onSuccess, onFail, body)=>()=>{
+const sendAds = (onSuccess, onFail, body)=>{
   fetch(
     'https://25.javascript.pages.academy/keksobooking',
     {
@@ -27,6 +27,8 @@ const sendAds = (onSuccess, onFail, body)=>()=>{
     .then((response) => {
       if (response.ok) {
         onSuccess();
+      }else {
+        onFail();
       }
     })
     .catch(() => {

@@ -1,4 +1,3 @@
-
 const housingTypes = {
   'bungalow':'Бунгало',
   'flat':'Квартира',
@@ -49,7 +48,6 @@ function createAd({offer, author}){
   }else{
     userAdImageContainer.classList.add('hidden');
   }
-
   return popupAdElement;
 }
 
@@ -58,8 +56,17 @@ function adSuccesMessage(){
   document.body.append(succesMessage);
   deleteMessage('.success');
 }
+
 function adErrorMessage(){
   const errorMessage = errorMessageTemplate.cloneNode(true);
+  document.body.append(errorMessage);
+  deleteMessage('.error');
+}
+
+function adErrorLoadMessage(){
+  const errorMessage = errorMessageTemplate.cloneNode(true);
+  errorMessage.querySelector('.error__message').textContent = 'Ошибка загрузки данных!';
+  errorMessage.querySelector('.error__button').textContent = 'Закрыть';
   document.body.append(errorMessage);
   deleteMessage('.error');
 }
@@ -81,6 +88,5 @@ function deleteMessage(selector){
     });
   }
 }
-// adErrorMessage();
 
-export {createAd, adErrorMessage, adSuccesMessage};
+export {createAd, adErrorMessage, adSuccesMessage, adErrorLoadMessage};

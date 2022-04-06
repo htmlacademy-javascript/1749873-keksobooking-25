@@ -1,4 +1,5 @@
 import {sendAds} from './load.js';
+import {resetFormMap} from './form.js';
 
 const adForm = document.querySelector('.ad-form');
 const adFormTitle = adForm.querySelector('#title');
@@ -73,8 +74,9 @@ function setFormSubmit(onSuccess, onFail){
     evt.preventDefault();
     if(pristine.validate()){
       const formData = new FormData(evt.target);
-      const send=sendAds(onSuccess, onFail, formData);
-      send();
+      sendAds(() => {
+        onSuccess();
+        resetFormMap();}, onFail, formData);
     }
   });
 }

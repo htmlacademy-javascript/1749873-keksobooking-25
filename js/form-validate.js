@@ -64,7 +64,6 @@ function getRoomNumberErrorText(){
 }
 
 pristine.addValidator(adFormTitle, validateTitle, `Обязательное поле! Длина от ${MIN_LENGTH_TITLE} до ${MAX_LENGTH_TITLE} символов`);
-
 pristine.addValidator(adFormPrice, validatePrice, getPriceErrorText );
 pristine.addValidator(adFormCapacity, validateRoomNumber);
 pristine.addValidator(adFormRoomNumber, validateRoomNumber, getRoomNumberErrorText);
@@ -80,4 +79,5 @@ function setFormSubmit(onSuccess, onFail){
     }
   });
 }
+
 export {setFormSubmit};

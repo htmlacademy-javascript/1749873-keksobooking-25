@@ -1,3 +1,6 @@
+import {sendAds} from './load.js';
+import {resetFormMap} from './form.js';
+
 const adForm = document.querySelector('.ad-form');
 const adFormTitle = adForm.querySelector('#title');
 const adFormPrice = adForm.querySelector('#price');
@@ -61,13 +64,20 @@ function getRoomNumberErrorText(){
 }
 
 pristine.addValidator(adFormTitle, validateTitle, `Обязательное поле! Длина от ${MIN_LENGTH_TITLE} до ${MAX_LENGTH_TITLE} символов`);
-
 pristine.addValidator(adFormPrice, validatePrice, getPriceErrorText );
 pristine.addValidator(adFormCapacity, validateRoomNumber);
 pristine.addValidator(adFormRoomNumber, validateRoomNumber, getRoomNumberErrorText);
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
 
-export {adForm};
+function setFormSubmit(onSuccess, onFail){
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if(pristine.validate()){
+      const formData = new FormData(evt.target);
+      sendAds(() => {
+        onSuccess();
+        resetFormMap();}, onFail, formData);
+    }
+  });
+}
+
+export {setFormSubmit};

@@ -20,8 +20,19 @@ noUiSlider.create(priceSlider, {
     },},
 });
 
+function resetSlider(){
+  priceSlider.noUiSlider.updateOptions({
+    range: {
+      min: 0,
+      max: 100000,
+    },
+    start: 5000,
+    step: 1,
+  });
+}
+
 priceSlider.noUiSlider.on('update', () => {
   adFormPrice.value = priceSlider.noUiSlider.get();
 });
 
-export {priceSlider};
+export {priceSlider,resetSlider};

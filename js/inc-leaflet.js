@@ -1,19 +1,12 @@
-import {adFormMapFiltersActive, adFormMapFiltersDisabled} from './form.js';
-import {getUserAds} from './data.js';
-import {createAd} from './template.js';
+import {createAd, adErrorLoadMessage} from './template.js';
+import {getAds} from './load.js';
 
-const resetButton = document.querySelector('.ad-form__reset');
 const adressAdForm = document.querySelector('#address');
 const mapLat = 35.68172;
 const mapLng = 139.75392;
-const userAdsForMap = getUserAds(10);
 
-adFormMapFiltersDisabled();
 
 const map = L.map('map-canvas')
-  .on('load', () => {
-    adFormMapFiltersActive();
-  })
   .setView({
     lat: mapLat,
     lng: mapLng,
@@ -60,7 +53,7 @@ mainMapMarker.on('moveend', (evt) => {
   adressAdForm.value = getAdressString(evt.target);
 });
 
-resetButton.addEventListener('click', ()=>{
+function resetMap(){
   mainMapMarker.setLatLng({
     lat: mapLat,
     lng: mapLng,
@@ -69,16 +62,25 @@ resetButton.addEventListener('click', ()=>{
     lat: mapLat,
     lng: mapLng,
   }, 13);
-  adressAdForm.placeholder =  `широта - ${mapLat},  долгота - ${mapLng}` ;
-});
+  map.closePopup();
+  adressAdForm.placeholder =`широта - ${mapLat},  долгота - ${mapLng}`;
+}
 
-userAdsForMap.forEach(({author, offer, location}) => {
-  const marker = L.marker({
-    lat:location.lat,
-    lng:location.lng,
-  },
-  {
-    icon: otherMapIcon,
+const markerGroup = L.layerGroup().addTo(map);
+
+function createAdMap(ads){
+  ads.forEach((ad) => {
+    const marker = L.marker({
+      lat:ad.location.lat,
+      lng:ad.location.lng,
+    },
+    {
+      icon: otherMapIcon,
+    });
+    marker.addTo(markerGroup).bindPopup(createAd(ad));
   });
-  marker.addTo(map).bindPopup(createAd({author, offer}));
-});
+}
+
+getAds(createAdMap, adErrorLoadMessage);
+
+export{resetMap};

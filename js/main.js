@@ -1,4 +1,4 @@
-import './form-validate.js';
-import './form.js';
-import './inc-leaflet.js';
-import './inc-nouislider.js';
+import {setFormSubmit} from'./form-validate.js';
+import {adErrorMessage, adSuccesMessage} from './template.js';
+
+setFormSubmit(adSuccesMessage, adErrorMessage);

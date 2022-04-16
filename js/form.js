@@ -9,7 +9,8 @@ const mapFilterFeatures=  document.querySelector('.map__features');
 const mapFilterForm = document.querySelector('.map__filters');
 const adFormTimeIn = adForm.querySelector('#timein');
 const adFormTimeOut = adForm.querySelector('#timeout');
-
+const avatarPreview = document.querySelector('.ad-form-header__preview img');
+const imagesPreview = document.querySelector('.ad-form__photo');
 
 function adFormMapFiltersDisabled (){
   adForm.classList.add('ad-form--disabled');
@@ -23,7 +24,7 @@ function adFormMapFiltersDisabled (){
   priceSlider.setAttribute('disabled', true);
 }
 
-function adFormMapFiltersActive (){
+function adFormMapFiltersActivate (){
   adForm.classList.remove('ad-form--disabled');
   adFormElements.forEach((element) => {
     element.removeAttribute('disabled');
@@ -42,30 +43,18 @@ adFormTimeIn.addEventListener('change', ()=>{
 adFormTimeOut.addEventListener('change', ()=>{
   adFormTimeIn.value=adFormTimeOut.value;
 });
-// function setType(ads,cb){
-//   mapFilterType.addEventListener('change', ()=>{
-//     const type = mapFilterType.value;
-//     function filterArr(){
-
-//       if(type){
-//         return ads.slice().filter((ad)=>ad.offer.type === type).slice(0, 10);
-//       }
-//       return ads.slice(0, 20);
-//     }
-//     console.log(filterArr());
-//   });cb(filterArr());, setType
-// }
-
 
 function resetFormMap(){
   adForm.reset();
   mapFilterForm.reset();
   resetMap();
   resetSlider();
+  imagesPreview.innerHTML='';
+  avatarPreview.src = 'img/muffin-grey.svg';
 }
 
 resetButton.addEventListener('click', ()=>{
   resetFormMap();
 });
 
-export {adFormMapFiltersActive, adFormMapFiltersDisabled, resetFormMap};
+export {adFormMapFiltersActivate, adFormMapFiltersDisabled, resetFormMap};

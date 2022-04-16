@@ -1,12 +1,12 @@
 import {createAd, adErrorLoadMessage} from './template.js';
 import {getAds} from './load.js';
-import {adFormMapFiltersActive} from './form.js';
+import {adFormMapFiltersActivate} from './form.js';
 
-const adressAdForm = document.querySelector('#address');
+const addressAdForm = document.querySelector('#address');
 const filterForm = document.querySelector('.map__filters');
-const timeoutDelay = 500;
-const mapLat = 35.68172;
-const mapLng = 139.75392;
+const TIMEOUT_DELAY = 500;
+const MAP_LAT = 35.68172;
+const MAP_LNG = 139.75392;
 const DEFAULT_VALUE = 'any';
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
@@ -22,8 +22,8 @@ const ADS_COUNT = 10;
 
 const map = L.map('map-canvas')
   .setView({
-    lat: mapLat,
-    lng: mapLng,
+    lat: MAP_LAT,
+    lng: MAP_LNG,
   }, 13);
 
 L.tileLayer(
@@ -45,8 +45,8 @@ const otherMapIcon = L.icon({
 });
 const mainMapMarker = L.marker(
   {
-    lat: mapLat,
-    lng: mapLng,
+    lat: MAP_LAT,
+    lng: MAP_LNG,
   },
   {
     draggable: true,
@@ -55,28 +55,28 @@ const mainMapMarker = L.marker(
 );
 mainMapMarker.addTo(map);
 
-adressAdForm.value = `широта - ${mainMapMarker.getLatLng().lat},  долгота - ${mainMapMarker.getLatLng().lng}`;
+addressAdForm.value = `широта - ${mainMapMarker.getLatLng().lat},  долгота - ${mainMapMarker.getLatLng().lng}`;
 
-function getAdressString(marker){
-  const adress = marker.getLatLng();
-  return `широта - ${adress.lat.toFixed(5)},  долгота - ${adress.lng.toFixed(5)}`;
+function getAddressString(marker){
+  const address = marker.getLatLng();
+  return `широта - ${address.lat.toFixed(5)},  долгота - ${address.lng.toFixed(5)}`;
 }
 
 mainMapMarker.on('moveend', (evt) => {
-  adressAdForm.value = getAdressString(evt.target);
+  addressAdForm.value = getAddressString(evt.target);
 });
 
 function resetMap(){
   mainMapMarker.setLatLng({
-    lat: mapLat,
-    lng: mapLng,
+    lat: MAP_LAT,
+    lng: MAP_LNG,
   });
   map.setView({
-    lat: mapLat,
-    lng: mapLng,
+    lat: MAP_LAT,
+    lng: MAP_LNG,
   }, 13);
   map.closePopup();
-  adressAdForm.placeholder =`широта - ${mapLat},  долгота - ${mapLng}`;
+  addressAdForm.placeholder =`широта - ${MAP_LAT},  долгота - ${MAP_LNG}`;
 }
 
 const markerGroup = L.layerGroup().addTo(map);
@@ -91,38 +91,42 @@ const createMarker = (ad) => {
       icon: otherMapIcon,
     },
   );
-
   marker
     .addTo(markerGroup)
     .bindPopup(createAd(ad));
 };
-function checkType(element){
+
+function checkType(ad){
   const mapFilterType = document.querySelector('#housing-type');
-  return element.offer.type === mapFilterType.value || mapFilterType.value === DEFAULT_VALUE;
+  return ad.offer.type === mapFilterType.value || mapFilterType.value === DEFAULT_VALUE;
 }
-function checkRooms(element){
+
+function checkRooms(ad){
   const mapFilterRooms = document.querySelector('#housing-rooms');
-  return element.offer.rooms === Number(mapFilterRooms.value) || mapFilterRooms.value=== DEFAULT_VALUE;
+  return ad.offer.rooms === Number(mapFilterRooms.value) || mapFilterRooms.value=== DEFAULT_VALUE;
 }
-function checkGuests(element){
+
+function checkGuests(ad){
   const mapFilterGuests = document.querySelector('#housing-guests');
-  return mapFilterGuests.value === DEFAULT_VALUE ? true : parseInt(mapFilterGuests.value, 10) <= element.offer.guests;
+  return mapFilterGuests.value === DEFAULT_VALUE ? true : parseInt(mapFilterGuests.value, 10) <= ad.offer.guests;
 }
-function checkPrice (element){
+
+function checkPrice (ad){
   const mapPrice = document.querySelector('#housing-price');
   switch (mapPrice.value) {
     case DEFAULT_VALUE:
       return true;
     case 'low':
-      return element.offer.price < LOW_PRICE;
+      return ad.offer.price < LOW_PRICE;
     case 'middle':
-      return element.offer.price >= LOW_PRICE && element.offer.price < HIGH_PRICE;
+      return ad.offer.price >= LOW_PRICE && ad.offer.price < HIGH_PRICE;
     case 'high':
-      return element.offer.price >= HIGH_PRICE;
+      return ad.offer.price >= HIGH_PRICE;
     default:
       return false;
   }
 }
+
 function debounce (callback, timeout) {
   let timeoutId;
   return (...rest) => {
@@ -130,11 +134,12 @@ function debounce (callback, timeout) {
     timeoutId = setTimeout(() => callback.apply(this, rest), timeout);
   };
 }
+
 function getUserFeatures(){
   const userFeatures=[];
   const features = document.querySelectorAll('[name="features"]:checked');
-  features.forEach((elem)=>{
-    userFeatures.push(elem.value);
+  features.forEach((feature)=>{
+    userFeatures.push(feature.value);
   });
   return userFeatures;
 }
@@ -172,17 +177,17 @@ function onFilterChange (ads){
     const filteredAds = getFilters(ads);
     markerGroup.clearLayers();
     createLayer(filteredAds);
-  }, timeoutDelay);
+  }, TIMEOUT_DELAY);
 }
 
 function setFilter(ads){
   filterForm.addEventListener('change', onFilterChange(ads));
 }
+
 function createLayer (ads){
   ads.slice(0, ADS_COUNT).forEach((ad)=>{createMarker(ad);});
-  adFormMapFiltersActive();
+  adFormMapFiltersActivate();
 }
-
 
 getAds((ads)=>{createLayer(ads); setFilter(ads);
 }, adErrorLoadMessage);

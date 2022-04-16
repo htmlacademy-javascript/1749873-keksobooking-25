@@ -12,6 +12,6 @@ function adFormMapFiltersDisabled (){
   mapFiltersElements.forEach((element) => {
     element.setAttribute('disabled', true);
   });
-
 }
+
 adFormMapFiltersDisabled();

@@ -30,7 +30,6 @@ const pristine =  new Pristine(adForm,{
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
   errorTextClass: 'ad-form__element__error-text',
-
 });
 
 function validateTitle(title){

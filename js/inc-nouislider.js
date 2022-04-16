@@ -1,15 +1,18 @@
 const priceSlider = document.querySelector('.ad-form__slider');
 const adFormPrice = document.querySelector('#price');
+const rangeSlider = {
+  min: 0,
+  max: 100000,
+};
+const startSlider = 5000;
+const stepSlider = 1;
 
-adFormPrice.value = 5000;
+adFormPrice.value = startSlider;
 
 noUiSlider.create(priceSlider, {
-  range: {
-    min: 0,
-    max: 100000,
-  },
-  start: 5000,
-  step: 1,
+  range: rangeSlider,
+  start: startSlider,
+  step: stepSlider,
   connect: 'lower',
   format: {
     to: function (value) {
@@ -22,12 +25,9 @@ noUiSlider.create(priceSlider, {
 
 function resetSlider(){
   priceSlider.noUiSlider.updateOptions({
-    range: {
-      min: 0,
-      max: 100000,
-    },
-    start: 5000,
-    step: 1,
+    range: rangeSlider,
+    start: startSlider,
+    step: stepSlider,
   });
 }
 

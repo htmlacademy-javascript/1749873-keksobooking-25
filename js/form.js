@@ -4,17 +4,20 @@ import {resetMap} from './inc-leaflet.js';
 const adForm = document.querySelector('.ad-form');
 const resetButton = document.querySelector('.ad-form__reset');
 const adFormElements = adForm.querySelectorAll('.ad-form__element');
-const mapFiltersElements = document.querySelectorAll('.map__filter');
-const mapFiltersFeatures=  document.querySelector('.map__features');
-const mapFilters = document.querySelector('.map__filters');
+const mapFilterElements = document.querySelectorAll('.map__filter');
+const mapFilterFeatures=  document.querySelector('.map__features');
+const mapFilterForm = document.querySelector('.map__filters');
+const adFormTimeIn = adForm.querySelector('#timein');
+const adFormTimeOut = adForm.querySelector('#timeout');
+
 
 function adFormMapFiltersDisabled (){
   adForm.classList.add('ad-form--disabled');
   adFormElements.forEach((element) => {
     element.setAttribute('disabled', true);
   });
-  mapFiltersFeatures.setAttribute('disabled', true);
-  mapFiltersElements.forEach((element) => {
+  mapFilterFeatures.setAttribute('disabled', true);
+  mapFilterElements.forEach((element) => {
     element.setAttribute('disabled', true);
   });
   priceSlider.setAttribute('disabled', true);
@@ -25,32 +28,44 @@ function adFormMapFiltersActive (){
   adFormElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
-  mapFiltersFeatures.removeAttribute('disabled');
-  mapFiltersElements.forEach((element) => {
+  mapFilterFeatures.removeAttribute('disabled');
+  mapFilterElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
   priceSlider.removeAttribute('disabled');
 }
-///синхронизация времени выезда и заезда////
-const adFormtimein = adForm.querySelector('#timein');
-const adFormtimeout = adForm.querySelector('#timeout');
 
-adFormtimein.addEventListener('change', ()=>{
-  adFormtimeout.value=adFormtimein.value;
+adFormTimeIn.addEventListener('change', ()=>{
+  adFormTimeOut.value=adFormTimeIn.value;
 });
 
-adFormtimeout.addEventListener('change', ()=>{
-  adFormtimein.value=adFormtimeout.value;
+adFormTimeOut.addEventListener('change', ()=>{
+  adFormTimeIn.value=adFormTimeOut.value;
 });
+// function setType(ads,cb){
+//   mapFilterType.addEventListener('change', ()=>{
+//     const type = mapFilterType.value;
+//     function filterArr(){
 
-// adFormMapFiltersDisabled();
+//       if(type){
+//         return ads.slice().filter((ad)=>ad.offer.type === type).slice(0, 10);
+//       }
+//       return ads.slice(0, 20);
+//     }
+//     console.log(filterArr());
+//   });cb(filterArr());, setType
+// }
+
+
 function resetFormMap(){
   adForm.reset();
-  mapFilters.reset();
+  mapFilterForm.reset();
   resetMap();
   resetSlider();
 }
+
 resetButton.addEventListener('click', ()=>{
   resetFormMap();
 });
+
 export {adFormMapFiltersActive, adFormMapFiltersDisabled, resetFormMap};

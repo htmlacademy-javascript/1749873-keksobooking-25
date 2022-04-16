@@ -7,6 +7,7 @@ const adFormPrice = adForm.querySelector('#price');
 const adFormCapacity = adForm.querySelector('#capacity');
 const adFormRoomNumber = adForm.querySelector('#room_number');
 const adFormtType = adForm.querySelector('#type');
+const submitButton = adForm.querySelector('.ad-form__submit');
 const adFormRoomNumberOption = {
   '1':['1'],
   '2': ['1','2'],
@@ -63,6 +64,16 @@ function getRoomNumberErrorText(){
   return `${adFormRoomNumber.value} ${adFormRoomNumber.value==='1' ? 'комната' : 'комнаты'} только для ${adFormRoomNumber.value} ${adFormRoomNumber.value==='1' ? 'гостя' : 'гостей и менее!'} `;
 }
 
+const blockSubmitButton = () => {
+  submitButton.setAttribute('disabled', true);
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.removeAttribute('disabled');
+  submitButton.textContent = 'Опубликовать';
+};
+
 pristine.addValidator(adFormTitle, validateTitle, `Обязательное поле! Длина от ${MIN_LENGTH_TITLE} до ${MAX_LENGTH_TITLE} символов`);
 pristine.addValidator(adFormPrice, validatePrice, getPriceErrorText );
 pristine.addValidator(adFormCapacity, validateRoomNumber);
@@ -73,9 +84,13 @@ function setFormSubmit(onSuccess, onFail){
     evt.preventDefault();
     if(pristine.validate()){
       const formData = new FormData(evt.target);
+      blockSubmitButton();
       sendAds(() => {
         onSuccess();
-        resetFormMap();}, onFail, formData);
+        resetFormMap();
+        unblockSubmitButton();
+      }
+      , onFail, formData);
     }
   });
 }

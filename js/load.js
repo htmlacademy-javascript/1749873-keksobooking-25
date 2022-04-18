@@ -36,5 +36,4 @@ const sendAds = (onSuccess, onFail, body)=>{
     });
 };
 
-
 export{getAds,sendAds};

@@ -4,15 +4,15 @@ const rangeSlider = {
   min: 0,
   max: 100000,
 };
-const startSlider = 5000;
-const stepSlider = 1;
+const START_SLIDER = 5000;
+const STEP_SLIDER = 1;
 
-adFormPrice.value = startSlider;
+adFormPrice.value = START_SLIDER;
 
 noUiSlider.create(priceSlider, {
   range: rangeSlider,
-  start: startSlider,
-  step: stepSlider,
+  start: START_SLIDER,
+  step: STEP_SLIDER,
   connect: 'lower',
   format: {
     to: function (value) {
@@ -26,8 +26,8 @@ noUiSlider.create(priceSlider, {
 function resetSlider(){
   priceSlider.noUiSlider.updateOptions({
     range: rangeSlider,
-    start: startSlider,
-    step: stepSlider,
+    start: START_SLIDER,
+    step: STEP_SLIDER,
   });
 }
 

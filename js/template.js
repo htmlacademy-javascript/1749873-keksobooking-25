@@ -1,3 +1,5 @@
+import {mapFiltersActivate, unblockSubmitButton} from './form.js';
+
 const housingTypes = {
   'bungalow':'Бунгало',
   'flat':'Квартира',
@@ -8,8 +10,8 @@ const housingTypes = {
 const popupAdTemplate = document.querySelector('#card').content.querySelector('.popup');
 const successMessageTemplate=document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate=document.querySelector('#error').content.querySelector('.error');
-const isEscapeKey = (evt) => evt.key === 'Escape';
-
+const isEscapeKey = (evt) => evt.key === 'Escape'|| evt.keyCode === 27;
+// evt.key === 'Escape'||
 function createAd({offer, author}){
   const popupAdElement = popupAdTemplate.cloneNode(true);
   popupAdElement.querySelector('.popup__title').textContent = offer.title;
@@ -48,45 +50,99 @@ function createAd({offer, author}){
   }else{
     userAdImageContainer.classList.add('hidden');
   }
+  mapFiltersActivate();
   return popupAdElement;
 }
 
+const succesMessage = successMessageTemplate.cloneNode(true);
+succesMessage.classList.add('hidden');
+document.body.append(succesMessage);
+const errorMessage = errorMessageTemplate.cloneNode(true);
+errorMessage.classList.add('hidden');
+document.body.append(errorMessage);
+const errorLoadMessage = errorMessage;
+errorMessage.querySelector('.error__message').textContent = 'Ошибка загрузки данных!';
+errorMessage.querySelector('.error__button').textContent = 'Закрыть';
+errorLoadMessage.classList.add('hidden');
+document.body.append(errorLoadMessage);
+
 function adSuccesMessage(){
-  const succesMessage = successMessageTemplate.cloneNode(true);
-  document.body.append(succesMessage);
-  deleteMessage('.success');
+  succesMessage.classList.remove('hidden');
+  document.addEventListener('keydown', onEscKeydown);
+  document.addEventListener('click', closeSuccessMessage);
 }
 
 function adErrorMessage(){
-  const errorMessage = errorMessageTemplate.cloneNode(true);
-  document.body.append(errorMessage);
-  deleteMessage('.error');
+  errorMessage.classList.remove('hidden');
+  document.addEventListener('keydown', onEscKeydown);
+  document.addEventListener('click', closeErrorMessage);
 }
 
 function adErrorLoadMessage(){
-  const errorMessage = errorMessageTemplate.cloneNode(true);
-  errorMessage.querySelector('.error__message').textContent = 'Ошибка загрузки данных!';
-  errorMessage.querySelector('.error__button').textContent = 'Закрыть';
-  document.body.append(errorMessage);
-  deleteMessage('.error');
+  errorLoadMessage.classList.remove('hidden');
+  document.addEventListener('keydown', onEscKeydown);
+  document.addEventListener('click', closeErrorMessage);
 }
 
-function deleteMessage(selector){
-  const message = document.querySelector(selector);
-  document.addEventListener('click', ()=>{
-    message.remove();
-  });
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      message.remove();
-    }
-  });
-  if(selector==='.error'){
-    const errorButton = document.querySelector('button[type=button]');
-    errorButton.addEventListener('click', ()=>{
-      message.remove();
-    });
+function onEscKeydown (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeErrorMessage();
+    closeSuccessMessage();
   }
 }
+
+function closeErrorMessage(){
+  errorMessage.classList.add('hidden');
+  unblockSubmitButton();
+  document.removeEventListener('keydown', onEscKeydown);
+  document.removeEventListener('click', closeErrorMessage);
+}
+
+function closeSuccessMessage () {
+  succesMessage.classList.add('hidden');
+  unblockSubmitButton();
+  document.removeEventListener('keydown', onEscKeydown);
+  document.removeEventListener('click', closeSuccessMessage);
+}
+
+
+// function onCloseMessages(){
+//   document.addEventListener('click', ()=>{
+//     closeErrorMessage();
+//     closeSuccessMessage();
+//   });
+// }
+// document.addEventListener('click', ()=>{
+//   closeErrorMessage();
+//   closeSuccessMessage();
+// });
+
+// const errorButton = document.querySelector('.error__button');
+// errorButton.addEventListener('click', ()=>{
+//   closeErrorMessage();
+//   closeSuccessMessage();
+// });
+
+// function deleteMessage(selector){
+//   const message = document.querySelector(selector);
+//   document.addEventListener('click', ()=>{
+//     message.remove();
+//     unblockSubmitButton();
+//   });
+//   document.addEventListener('keydown', (evt) => {
+//     if (isEscapeKey(evt)) {
+//       message.remove();
+//       unblockSubmitButton();
+//     }
+//   });
+//   if(selector === '.error'){
+//     const errorButton = document.querySelector('button[type=button]');
+//     errorButton.addEventListener('click', ()=>{
+//       message.remove();
+//       unblockSubmitButton();
+//     });
+//   }
+// }
 
 export {createAd, adErrorMessage, adSuccesMessage, adErrorLoadMessage};

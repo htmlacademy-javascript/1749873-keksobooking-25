@@ -1,15 +1,17 @@
 import {createAd, adErrorLoadMessage} from './template.js';
 import {getAds} from './load.js';
-import {adFormMapFiltersActivate} from './form.js';
 
-const addressAdForm = document.querySelector('#address');
-const filterForm = document.querySelector('.map__filters');
+
 const TIMEOUT_DELAY = 500;
 const MAP_LAT = 35.68172;
 const MAP_LNG = 139.75392;
 const DEFAULT_VALUE = 'any';
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
+const ADS_COUNT = 10;
+
+const addressAdForm = document.querySelector('#address');
+const filterForm = document.querySelector('.map__filters');
 const MapIcon = {
   mainUrl : './img/main-pin.svg',
   mainSize: [52, 52],
@@ -18,13 +20,8 @@ const MapIcon = {
   otherSize: [40, 40],
   otherAnchor: [20, 40],
 };
-const ADS_COUNT = 10;
 
-const map = L.map('map-canvas')
-  .setView({
-    lat: MAP_LAT,
-    lng: MAP_LNG,
-  }, 13);
+const map = L.map('map-canvas');
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -55,29 +52,17 @@ const mainMapMarker = L.marker(
 );
 mainMapMarker.addTo(map);
 
-addressAdForm.value = `широта - ${mainMapMarker.getLatLng().lat},  долгота - ${mainMapMarker.getLatLng().lng}`;
+addressAdForm.value =`${mainMapMarker.getLatLng().lat} ${mainMapMarker.getLatLng().lng}`;
 
 function getAddressString(marker){
   const address = marker.getLatLng();
-  return `широта - ${address.lat.toFixed(5)},  долгота - ${address.lng.toFixed(5)}`;
+  return `${address.lat.toFixed(5)} ${address.lng.toFixed(5)}`;
 }
 
 mainMapMarker.on('moveend', (evt) => {
   addressAdForm.value = getAddressString(evt.target);
 });
 
-function resetMap(){
-  mainMapMarker.setLatLng({
-    lat: MAP_LAT,
-    lng: MAP_LNG,
-  });
-  map.setView({
-    lat: MAP_LAT,
-    lng: MAP_LNG,
-  }, 13);
-  map.closePopup();
-  addressAdForm.placeholder =`широта - ${MAP_LAT},  долгота - ${MAP_LNG}`;
-}
 
 const markerGroup = L.layerGroup().addTo(map);
 
@@ -164,7 +149,7 @@ function compareAds(adFirst, adSecond){
 }
 
 function getFilters (ads){
-  const filteredAds = ads.slice().sort(compareAds).filter((ad)=>(
+  const filteredAds = ads.slice().sort(compareAds).slice(0, ADS_COUNT).filter((ad)=>(
     checkType(ad)
     &&checkRooms(ad)
     &&checkPrice(ad)
@@ -186,10 +171,31 @@ function setFilter(ads){
 
 function createLayer (ads){
   ads.slice(0, ADS_COUNT).forEach((ad)=>{createMarker(ad);});
-  adFormMapFiltersActivate();
+}
+function resetMap(){
+  mainMapMarker.setLatLng({
+    lat: MAP_LAT,
+    lng: MAP_LNG,
+  });
+  map.setView({
+    lat: MAP_LAT,
+    lng: MAP_LNG,
+  }, 13);
+  map.closePopup();
+  addressAdForm.value =`${mainMapMarker.getLatLng().lat} ${mainMapMarker.getLatLng().lng}`;
+  addressAdForm.placeholder = `${mainMapMarker.getLatLng().lat} ${mainMapMarker.getLatLng().lng}`;
 }
 
-getAds((ads)=>{createLayer(ads); setFilter(ads);
-}, adErrorLoadMessage);
+getAds((ads)=>{createLayer(ads);}, adErrorLoadMessage);
 
-export{resetMap};
+function setMap(preInit){
+  map.on('load', () => {
+    preInit();
+    getAds((ads)=>{createLayer(ads); setFilter(ads);}, adErrorLoadMessage);
+  }).setView({
+    lat: MAP_LAT,
+    lng: MAP_LNG,
+  }, 13);
+}
+
+export{resetMap, setMap};

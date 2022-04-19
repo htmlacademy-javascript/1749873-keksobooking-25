@@ -2,38 +2,30 @@ import {priceSlider, resetSlider} from './inc-nouislider.js';
 import {resetMap} from './inc-leaflet.js';
 
 const adForm = document.querySelector('.ad-form');
-const resetButton = document.querySelector('.ad-form__reset');
+const resetButton = adForm.querySelector('.ad-form__reset');
 const adFormElements = adForm.querySelectorAll('.ad-form__element');
-const mapFilterElements = document.querySelectorAll('.map__filter');
-const mapFilterFeatures=  document.querySelector('.map__features');
-const mapFilterForm = document.querySelector('.map__filters');
+const mapFilter = document.querySelector('.map__filters');
+const mapFilterElements = mapFilter.querySelectorAll('.map__filter');
+const mapFilterFeatures=  mapFilter.querySelector('.map__features');
 const adFormTimeIn = adForm.querySelector('#timein');
 const adFormTimeOut = adForm.querySelector('#timeout');
-const avatarPreview = document.querySelector('.ad-form-header__preview img');
-const imagesPreview = document.querySelector('.ad-form__photo');
+const avatarPreview = adForm.querySelector('.ad-form-header__preview img');
+const imagesPreview = adForm.querySelector('.ad-form__photo');
+const submitButton = adForm.querySelector('.ad-form__submit');
 
-function adFormMapFiltersDisabled (){
-  adForm.classList.add('ad-form--disabled');
-  adFormElements.forEach((element) => {
-    element.setAttribute('disabled', true);
-  });
-  mapFilterFeatures.setAttribute('disabled', true);
-  mapFilterElements.forEach((element) => {
-    element.setAttribute('disabled', true);
-  });
-  priceSlider.setAttribute('disabled', true);
-}
-
-function adFormMapFiltersActivate (){
+function adFormActivate (){
   adForm.classList.remove('ad-form--disabled');
   adFormElements.forEach((element) => {
-    element.removeAttribute('disabled');
+    element.classList.remove('disabled');
   });
-  mapFilterFeatures.removeAttribute('disabled');
+  priceSlider.classList.remove('disabled');
+}
+function mapFiltersActivate (){
+  mapFilterFeatures.classList.remove('disabled');
   mapFilterElements.forEach((element) => {
-    element.removeAttribute('disabled');
+    element.classList.remove('disabled');
   });
-  priceSlider.removeAttribute('disabled');
+  mapFilter.classList.remove('map__filters--disabled');
 }
 
 adFormTimeIn.addEventListener('change', ()=>{
@@ -46,15 +38,28 @@ adFormTimeOut.addEventListener('change', ()=>{
 
 function resetFormMap(){
   adForm.reset();
-  mapFilterForm.reset();
+  mapFilter.reset();
   resetMap();
   resetSlider();
   imagesPreview.innerHTML='';
   avatarPreview.src = 'img/muffin-grey.svg';
 }
 
-resetButton.addEventListener('click', ()=>{
+resetButton.addEventListener('click', (evt)=>{
+  evt.preventDefault();
   resetFormMap();
 });
 
-export {adFormMapFiltersActivate, adFormMapFiltersDisabled, resetFormMap};
+const blockSubmitButton = () => {
+  submitButton.setAttribute('disabled', true);
+  submitButton.classList.add('disabled');
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.removeAttribute('disabled');
+  submitButton.classList.remove('disabled');
+  submitButton.textContent = 'Опубликовать';
+};
+
+export {adFormActivate, resetFormMap, unblockSubmitButton, blockSubmitButton, mapFiltersActivate};

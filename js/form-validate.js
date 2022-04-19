@@ -1,22 +1,23 @@
 import {sendAds} from './load.js';
-import {resetFormMap} from './form.js';
+import {resetFormMap, unblockSubmitButton, blockSubmitButton} from './form.js';
 
+const MIN_LENGTH_TITLE = 30;
+const MAX_LENGTH_TITLE = 100;
+const MAX_PRICE = 100000;
 const adForm = document.querySelector('.ad-form');
 const adFormTitle = adForm.querySelector('#title');
 const adFormPrice = adForm.querySelector('#price');
 const adFormCapacity = adForm.querySelector('#capacity');
 const adFormRoomNumber = adForm.querySelector('#room_number');
 const adFormtType = adForm.querySelector('#type');
-const submitButton = adForm.querySelector('.ad-form__submit');
+
 const adFormRoomNumberOption = {
   '1':['1'],
   '2': ['1','2'],
   '3': ['1','2','3'],
   '100':['0'],
 };
-const MIN_LENGTH_TITLE = 30;
-const MAX_LENGTH_TITLE = 100;
-const MAX_PRICE = 100000;
+
 const priceMap = {
   'bungalow':0,
   'flat':1000,
@@ -63,15 +64,6 @@ function getRoomNumberErrorText(){
   return `${adFormRoomNumber.value} ${adFormRoomNumber.value==='1' ? 'комната' : 'комнаты'} только для ${adFormRoomNumber.value} ${adFormRoomNumber.value==='1' ? 'гостя' : 'гостей и менее!'} `;
 }
 
-const blockSubmitButton = () => {
-  submitButton.setAttribute('disabled', true);
-  submitButton.textContent = 'Публикую...';
-};
-
-const unblockSubmitButton = () => {
-  submitButton.removeAttribute('disabled');
-  submitButton.textContent = 'Опубликовать';
-};
 
 pristine.addValidator(adFormTitle, validateTitle, `Обязательное поле! Длина от ${MIN_LENGTH_TITLE} до ${MAX_LENGTH_TITLE} символов`);
 pristine.addValidator(adFormPrice, validatePrice, getPriceErrorText );

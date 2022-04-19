@@ -1,9 +1,9 @@
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const avatar = document.querySelector('#avatar');
 const avatarPreview = document.querySelector('.ad-form-header__preview img');
 const images = document.querySelector('#images');
 const imagesPreview = document.querySelector('.ad-form__photo');
-
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 avatar.addEventListener('change', () => {
   const file = avatar.files[0];

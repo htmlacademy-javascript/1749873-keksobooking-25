@@ -106,43 +106,4 @@ function closeSuccessMessage () {
   document.removeEventListener('click', closeSuccessMessage);
 }
 
-
-// function onCloseMessages(){
-//   document.addEventListener('click', ()=>{
-//     closeErrorMessage();
-//     closeSuccessMessage();
-//   });
-// }
-// document.addEventListener('click', ()=>{
-//   closeErrorMessage();
-//   closeSuccessMessage();
-// });
-
-// const errorButton = document.querySelector('.error__button');
-// errorButton.addEventListener('click', ()=>{
-//   closeErrorMessage();
-//   closeSuccessMessage();
-// });
-
-// function deleteMessage(selector){
-//   const message = document.querySelector(selector);
-//   document.addEventListener('click', ()=>{
-//     message.remove();
-//     unblockSubmitButton();
-//   });
-//   document.addEventListener('keydown', (evt) => {
-//     if (isEscapeKey(evt)) {
-//       message.remove();
-//       unblockSubmitButton();
-//     }
-//   });
-//   if(selector === '.error'){
-//     const errorButton = document.querySelector('button[type=button]');
-//     errorButton.addEventListener('click', ()=>{
-//       message.remove();
-//       unblockSubmitButton();
-//     });
-//   }
-// }
-
 export {createAd, adErrorMessage, adSuccesMessage, adErrorLoadMessage};

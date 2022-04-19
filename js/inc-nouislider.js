@@ -1,11 +1,12 @@
+const START_SLIDER = 5000;
+const STEP_SLIDER = 1;
 const priceSlider = document.querySelector('.ad-form__slider');
 const adFormPrice = document.querySelector('#price');
 const rangeSlider = {
   min: 0,
   max: 100000,
 };
-const START_SLIDER = 5000;
-const STEP_SLIDER = 1;
+
 
 adFormPrice.value = START_SLIDER;
 

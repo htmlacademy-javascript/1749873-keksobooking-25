@@ -10,8 +10,7 @@ const housingTypes = {
 const popupAdTemplate = document.querySelector('#card').content.querySelector('.popup');
 const successMessageTemplate=document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate=document.querySelector('#error').content.querySelector('.error');
-const isEscapeKey = (evt) => evt.key === 'Escape'|| evt.keyCode === 27;
-// evt.key === 'Escape'||
+const isEscapeKey = (evt) => evt.key === 'Escape';
 function createAd({offer, author}){
   const popupAdElement = popupAdTemplate.cloneNode(true);
   popupAdElement.querySelector('.popup__title').textContent = offer.title;

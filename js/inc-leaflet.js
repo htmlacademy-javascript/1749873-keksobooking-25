@@ -174,6 +174,7 @@ function resetMap(ads){
   }, 13);
   map.closePopup();
   addressAdForm.value =`${mainMapMarker.getLatLng().lat} ${mainMapMarker.getLatLng().lng}`;
+  addressAdForm.placeholder =`${mainMapMarker.getLatLng().lat} ${mainMapMarker.getLatLng().lng}`;
   markerGroup.clearLayers();
   createLayer(ads);
 }
@@ -183,20 +184,16 @@ function onResetMapAdForms(ads){
     evt.preventDefault();
     resetMap(ads);
   });
-  document.querySelector('.ad-form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    resetMap(ads);
-  });
 }
 
 function setMap(preInt){
   map.on('load', () => {
     preInt();
-    getAds((ads)=>{createLayer(ads); setFilter(ads);onResetMapAdForms(ads);}, adErrorLoadMessage);
+    getAds((ads)=>{createLayer(ads); setFilter(ads); onResetMapAdForms(ads);}, adErrorLoadMessage);
   }).setView({
     lat: MAP_LAT,
     lng: MAP_LNG,
   }, 13);
 }
 
-export{setMap};
+export{setMap, resetMap};

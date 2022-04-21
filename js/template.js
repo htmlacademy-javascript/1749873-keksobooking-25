@@ -83,34 +83,31 @@ function createAd({offer, author}){
 }
 
 const succesMessage = successMessageTemplate.cloneNode(true);
-succesMessage.classList.add('hidden');
-document.body.append(succesMessage);
 
 const errorMessage = errorMessageTemplate.cloneNode(true);
-errorMessage.classList.add('hidden');
-document.body.append(errorMessage);
 
 const errorLoadMessage = errorMessageTemplate.cloneNode(true);
 errorLoadMessage.classList.add('error-load-message');
-errorLoadMessage.classList.remove('error');
 errorLoadMessage.querySelector('.error__message').textContent = 'Ошибка загрузки данных!';
 errorLoadMessage.querySelector('.error__button').textContent = 'Закрыть';
-errorLoadMessage.classList.add('hidden');
-document.body.append(errorLoadMessage);
+
 
 function adSuccesMessage(){
+  document.body.append(succesMessage);
   succesMessage.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
   document.addEventListener('click', closeSuccessMessage);
 }
 
 function adErrorMessage(){
+  document.body.append(errorMessage);
   errorMessage.classList.remove('hidden');
   document.addEventListener('keydown',onEscKeydown);
   document.addEventListener('click', closeErrorMessage);
 }
 
 function adErrorLoadMessage(){
+  document.body.append(errorLoadMessage);
   errorLoadMessage.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
   document.addEventListener('click', closeErrorLoadMessage);

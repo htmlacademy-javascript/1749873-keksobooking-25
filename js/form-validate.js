@@ -1,5 +1,6 @@
-import {sendAds} from './load.js';
+import {sendAds, getAds} from './load.js';
 import {resetFormMap, unblockSubmitButton, blockSubmitButton} from './form.js';
+import {resetMap} from './inc-leaflet.js';
 
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
@@ -79,6 +80,7 @@ function setFormSubmit(onSuccess, onFail){
       sendAds(() => {
         onSuccess();
         resetFormMap();
+        getAds((ads)=>resetMap(ads));
         unblockSubmitButton();
       }
       , onFail, formData);

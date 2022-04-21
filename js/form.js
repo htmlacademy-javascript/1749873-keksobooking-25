@@ -1,5 +1,6 @@
 import {priceSlider, resetSlider} from './inc-nouislider.js';
 
+
 const adForm = document.querySelector('.ad-form');
 const resetButton = adForm.querySelector('.ad-form__reset');
 const adFormElements = adForm.querySelectorAll('.ad-form__element');

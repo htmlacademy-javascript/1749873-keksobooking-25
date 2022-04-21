@@ -1,5 +1,4 @@
 import {priceSlider, resetSlider} from './inc-nouislider.js';
-import {resetMap} from './inc-leaflet.js';
 
 const adForm = document.querySelector('.ad-form');
 const resetButton = adForm.querySelector('.ad-form__reset');
@@ -39,11 +38,11 @@ adFormTimeOut.addEventListener('change', ()=>{
 function resetFormMap(){
   adForm.reset();
   mapFilter.reset();
-  resetMap();
   resetSlider();
   imagesPreview.innerHTML='';
   avatarPreview.src = 'img/muffin-grey.svg';
 }
+
 
 resetButton.addEventListener('click', (evt)=>{
   evt.preventDefault();
@@ -51,15 +50,13 @@ resetButton.addEventListener('click', (evt)=>{
 });
 
 const blockSubmitButton = () => {
-  submitButton.setAttribute('disabled', true);
   submitButton.classList.add('disabled');
   submitButton.textContent = 'Публикую...';
 };
 
 const unblockSubmitButton = () => {
-  submitButton.removeAttribute('disabled');
   submitButton.classList.remove('disabled');
   submitButton.textContent = 'Опубликовать';
 };
 
-export {adFormActivate, resetFormMap, unblockSubmitButton, blockSubmitButton, mapFiltersActivate};
+export {resetFormMap, adFormActivate, unblockSubmitButton, blockSubmitButton, mapFiltersActivate};

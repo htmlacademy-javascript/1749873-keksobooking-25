@@ -1,7 +1,6 @@
 import {createAd, adErrorLoadMessage} from './template.js';
 import {getAds} from './load.js';
 
-
 const TIMEOUT_DELAY = 500;
 const MAP_LAT = 35.68172;
 const MAP_LNG = 139.75392;
@@ -10,6 +9,7 @@ const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
 const ADS_COUNT = 10;
 
+const resetButton = document.querySelector('.ad-form__reset');
 const addressAdForm = document.querySelector('#address');
 const filterForm = document.querySelector('.map__filters');
 const MapIcon = {
@@ -63,7 +63,6 @@ mainMapMarker.on('moveend', (evt) => {
   addressAdForm.value = getAddressString(evt.target);
 });
 
-
 const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = (ad) => {
@@ -93,7 +92,7 @@ function checkRooms(ad){
 
 function checkGuests(ad){
   const mapFilterGuests = document.querySelector('#housing-guests');
-  return mapFilterGuests.value === DEFAULT_VALUE ? true : parseInt(mapFilterGuests.value, 10) <= ad.offer.guests;
+  return mapFilterGuests.value === DEFAULT_VALUE ? true : parseInt(mapFilterGuests.value, 10) === ad.offer.guests;
 }
 
 function checkPrice (ad){
@@ -120,40 +119,31 @@ function debounce (callback, timeout) {
   };
 }
 
-function getUserFeatures(){
-  const userFeatures=[];
-  const features = document.querySelectorAll('[name="features"]:checked');
-  features.forEach((feature)=>{
-    userFeatures.push(feature.value);
-  });
-  return userFeatures;
-}
-
-function getComfortLevelAds(ad){
-  let comfortLevel = 0;
-  if(ad.offer.features){
-    const userFeatures = getUserFeatures();
-    userFeatures.forEach((feature)=>{
-      if(ad.offer.features.includes(feature)){
-        comfortLevel++;
+function checkFeatures(ad){
+  let count = 0;
+  const checkedFeatures = filterForm.querySelectorAll('[name="features"]:checked');
+  if( ad.offer.features){
+    checkedFeatures.forEach((feature) => {
+      if (ad.offer.features.includes(feature.value)) {
+        count++;
+      }else{
+        count = 0;
       }
     });
   }
-  return comfortLevel;
-}
-
-function compareAds(adFirst, adSecond){
-  const levelFirst = getComfortLevelAds(adFirst);
-  const levelSecond = getComfortLevelAds(adSecond);
-  return levelSecond - levelFirst;
+  return count === checkedFeatures.length;
 }
 
 function getFilters (ads){
-  const filteredAds = ads.slice().sort(compareAds).slice(0, ADS_COUNT).filter((ad)=>(
-    checkType(ad)
-    &&checkRooms(ad)
-    &&checkPrice(ad)
-    &&checkGuests(ad)));
+  const filteredAds=[];
+  const filters=[checkType, checkRooms, checkPrice, checkGuests, checkFeatures];
+  ads.forEach((ad)=>{
+    if(filters.every((filter)=>filter(ad))) {
+      if(filteredAds.length<=9){
+        filteredAds.push(ad);
+      }
+    }
+  });
   return filteredAds;
 }
 
@@ -172,7 +162,8 @@ function setFilter(ads){
 function createLayer (ads){
   ads.slice(0, ADS_COUNT).forEach((ad)=>{createMarker(ad);});
 }
-function resetMap(){
+
+function resetMap(ads){
   mainMapMarker.setLatLng({
     lat: MAP_LAT,
     lng: MAP_LNG,
@@ -183,19 +174,29 @@ function resetMap(){
   }, 13);
   map.closePopup();
   addressAdForm.value =`${mainMapMarker.getLatLng().lat} ${mainMapMarker.getLatLng().lng}`;
-  addressAdForm.placeholder = `${mainMapMarker.getLatLng().lat} ${mainMapMarker.getLatLng().lng}`;
+  markerGroup.clearLayers();
+  createLayer(ads);
 }
 
-getAds((ads)=>{createLayer(ads);}, adErrorLoadMessage);
+function onResetMapAdForms(ads){
+  resetButton.addEventListener('click', (evt)=>{
+    evt.preventDefault();
+    resetMap(ads);
+  });
+  document.querySelector('.ad-form').addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    resetMap(ads);
+  });
+}
 
-function setMap(preInit){
+function setMap(preInt){
   map.on('load', () => {
-    preInit();
-    getAds((ads)=>{createLayer(ads); setFilter(ads);}, adErrorLoadMessage);
+    preInt();
+    getAds((ads)=>{createLayer(ads); setFilter(ads);onResetMapAdForms(ads);}, adErrorLoadMessage);
   }).setView({
     lat: MAP_LAT,
     lng: MAP_LNG,
   }, 13);
 }
 
-export{resetMap, setMap};
+export{setMap};

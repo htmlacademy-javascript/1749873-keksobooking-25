@@ -11,15 +11,44 @@ const popupAdTemplate = document.querySelector('#card').content.querySelector('.
 const successMessageTemplate=document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate=document.querySelector('#error').content.querySelector('.error');
 const isEscapeKey = (evt) => evt.key === 'Escape';
+
 function createAd({offer, author}){
   const popupAdElement = popupAdTemplate.cloneNode(true);
-  popupAdElement.querySelector('.popup__title').textContent = offer.title;
-  popupAdElement.querySelector('.popup__text--address').textContent = offer.address;
-  popupAdElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  popupAdElement.querySelector('.popup__type').textContent =housingTypes[offer.type];
-  popupAdElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${offer.rooms=== 1 ? 'комната' : 'комнаты'} для ${offer.guests} ${offer.guests=== 1 ? 'гостя' : 'гостей'}`;
-  popupAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-  popupAdElement.querySelector('.popup__avatar').src = author.avatar;
+  if(offer.title){
+    popupAdElement.querySelector('.popup__title').textContent = offer.title;
+  }else{
+    popupAdElement.querySelector('.popup__title').classList.add('hidden');
+  }
+  if(offer.address){
+    popupAdElement.querySelector('.popup__text--address').textContent = offer.address;
+  }else{
+    popupAdElement.querySelector('.popup__text--address').classList.add('hidden');
+  }
+  if(offer.price){
+    popupAdElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
+  }else{
+    popupAdElement.querySelector('.popup__text--price').classList.add('hidden');
+  }
+  if(offer.type){
+    popupAdElement.querySelector('.popup__type').textContent = housingTypes[offer.type];
+  }else{
+    popupAdElement.querySelector('.popup__type').classList.add('hidden');
+  }
+  if(offer.rooms){
+    popupAdElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${offer.rooms=== 1 ? 'комната' : 'комнаты'} для ${offer.guests} ${offer.guests=== 1 ? 'гостя' : 'гостей'}`;
+  }else{
+    popupAdElement.querySelector('.popup__text--capacity').classList.add('hidden');
+  }
+  if(offer.checkin){
+    popupAdElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  }else{
+    popupAdElement.querySelector('.popup__text--time').classList.add('hidden');
+  }
+  if(author.avatar){
+    popupAdElement.querySelector('.popup__avatar').src = author.avatar;
+  }else{
+    popupAdElement.querySelector('.popup__avatar').classList.add('hidden');
+  }
   const adFeatures = popupAdElement.querySelectorAll('.popup__feature');
   if(offer.features){
     const modifiers = offer.features.map((feature)=> `popup__feature--${feature}`);
@@ -56,12 +85,16 @@ function createAd({offer, author}){
 const succesMessage = successMessageTemplate.cloneNode(true);
 succesMessage.classList.add('hidden');
 document.body.append(succesMessage);
+
 const errorMessage = errorMessageTemplate.cloneNode(true);
 errorMessage.classList.add('hidden');
 document.body.append(errorMessage);
-const errorLoadMessage = errorMessage;
-errorMessage.querySelector('.error__message').textContent = 'Ошибка загрузки данных!';
-errorMessage.querySelector('.error__button').textContent = 'Закрыть';
+
+const errorLoadMessage = errorMessageTemplate.cloneNode(true);
+errorLoadMessage.classList.add('error-load-message');
+errorLoadMessage.classList.remove('error');
+errorLoadMessage.querySelector('.error__message').textContent = 'Ошибка загрузки данных!';
+errorLoadMessage.querySelector('.error__button').textContent = 'Закрыть';
 errorLoadMessage.classList.add('hidden');
 document.body.append(errorLoadMessage);
 
@@ -73,21 +106,21 @@ function adSuccesMessage(){
 
 function adErrorMessage(){
   errorMessage.classList.remove('hidden');
-  document.addEventListener('keydown', onEscKeydown);
+  document.addEventListener('keydown',onEscKeydown);
   document.addEventListener('click', closeErrorMessage);
 }
 
 function adErrorLoadMessage(){
   errorLoadMessage.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
-  document.addEventListener('click', closeErrorMessage);
+  document.addEventListener('click', closeErrorLoadMessage);
 }
 
 function onEscKeydown (evt) {
   if (isEscapeKey(evt)) {
-    evt.preventDefault();
     closeErrorMessage();
     closeSuccessMessage();
+    closeErrorLoadMessage();
   }
 }
 
@@ -96,6 +129,13 @@ function closeErrorMessage(){
   unblockSubmitButton();
   document.removeEventListener('keydown', onEscKeydown);
   document.removeEventListener('click', closeErrorMessage);
+}
+
+function closeErrorLoadMessage(){
+  errorLoadMessage.classList.add('hidden');
+  unblockSubmitButton();
+  document.removeEventListener('keydown', onEscKeydown);
+  document.removeEventListener('click', closeErrorLoadMessage);
 }
 
 function closeSuccessMessage () {

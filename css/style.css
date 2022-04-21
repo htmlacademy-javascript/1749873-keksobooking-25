@@ -949,12 +949,12 @@ fieldset {
  */
 
 .success,
-.error {
+.error,
+.error-load-message {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1100;
-
+  z-index: 99990;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 

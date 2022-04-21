@@ -1,9 +1,11 @@
-import {sendAds} from './load.js';
+import {sendAds, getAds} from './load.js';
 import {resetFormMap, unblockSubmitButton, blockSubmitButton} from './form.js';
+import {resetMap} from './inc-leaflet.js';
 
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
 const MAX_PRICE = 100000;
+
 const adForm = document.querySelector('.ad-form');
 const adFormTitle = adForm.querySelector('#title');
 const adFormPrice = adForm.querySelector('#price');
@@ -64,7 +66,6 @@ function getRoomNumberErrorText(){
   return `${adFormRoomNumber.value} ${adFormRoomNumber.value==='1' ? 'комната' : 'комнаты'} только для ${adFormRoomNumber.value} ${adFormRoomNumber.value==='1' ? 'гостя' : 'гостей и менее!'} `;
 }
 
-
 pristine.addValidator(adFormTitle, validateTitle, `Обязательное поле! Длина от ${MIN_LENGTH_TITLE} до ${MAX_LENGTH_TITLE} символов`);
 pristine.addValidator(adFormPrice, validatePrice, getPriceErrorText );
 pristine.addValidator(adFormCapacity, validateRoomNumber);
@@ -79,6 +80,7 @@ function setFormSubmit(onSuccess, onFail){
       sendAds(() => {
         onSuccess();
         resetFormMap();
+        getAds((ads)=>resetMap(ads));
         unblockSubmitButton();
       }
       , onFail, formData);

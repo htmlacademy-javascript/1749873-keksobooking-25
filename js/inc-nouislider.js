@@ -7,7 +7,6 @@ const rangeSlider = {
   max: 100000,
 };
 
-
 adFormPrice.value = START_SLIDER;
 
 noUiSlider.create(priceSlider, {
